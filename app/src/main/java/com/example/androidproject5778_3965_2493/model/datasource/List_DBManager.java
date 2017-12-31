@@ -73,6 +73,7 @@ public class List_DBManager implements DB_manager {
             }
         return false;
     }*/
+   //small change
 
     @Override
     public boolean addCustomer(ContentValues newCustomer) {
