@@ -6,7 +6,9 @@ import android.content.ContentValues;
 import com.example.androidproject5778_3965_2493.model.backend.DB_manager;
 import com.example.androidproject5778_3965_2493.model.entities.Branch;
 import com.example.androidproject5778_3965_2493.model.entities.Car;
+import com.example.androidproject5778_3965_2493.model.entities.CarModel;
 import com.example.androidproject5778_3965_2493.model.entities.Customer;
+import com.example.androidproject5778_3965_2493.model.entities.Enums;
 import com.example.androidproject5778_3965_2493.model.entities.Order;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToBranch;
 import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToCar;
+import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToCarModel;
 import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToCustomer;
 import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToOrder;
 
@@ -24,11 +27,13 @@ import static com.example.androidproject5778_3965_2493.model.datasource.RentCons
 public class List_DBManager implements DB_manager {
     public static List<Customer> customers;
     public static List<Car> cars;
+    public static List<CarModel> carModels;
     public static List<Branch> branchs;
     public static List<Order> orders;
     static {
         customers = new ArrayList<>();
         cars = new ArrayList<>();
+        carModels = new ArrayList<>();
         branchs = new ArrayList<>();
         orders = new ArrayList<>();
 
@@ -73,13 +78,12 @@ public class List_DBManager implements DB_manager {
             }
         return false;
     }*/
-   //small change
 
     @Override
     public boolean addCustomer(ContentValues newCustomer) {
         if (existCustomer(newCustomer)==true)
         {
-            throw ("The customer already exists in our system\n")
+            //  throw ("The customer already exists in our system\n")
             return false;
         }
         else {
@@ -94,6 +98,13 @@ public class List_DBManager implements DB_manager {
     public boolean addCar(ContentValues newCar) {
         Car car = ContentValuesToCar(newCar);
         cars.add(car);
+        return true;
+    }
+
+    @Override
+    public boolean addCarModel(ContentValues newCarModel) {
+        CarModel carModel = ContentValuesToCarModel(newCarModel);
+        carModels.add(carModel);
         return true;
     }
 
@@ -172,11 +183,11 @@ public class List_DBManager implements DB_manager {
 */
 
     @Override
-    public boolean updateCar(String id,ContentValues values) {
+    public boolean updateCar(int id,ContentValues values) {
         Car car = ContentValuesToCar(values);
         car.setCarNumber(id);
         for (int i = 0; i < cars.size(); i++)
-            if (cars.get(i).getCarNumber().equals(id)) {
+            if (cars.get(i).getCarNumber()== id) {
                 cars.set(i, car);
                 return true;
             }
@@ -218,6 +229,11 @@ public class List_DBManager implements DB_manager {
     }
 
     @Override
+    public List<CarModel> getCarModels() {
+        return carModels;
+    }
+
+    @Override
     public List<Branch> getBranchs() {
         return branchs;
     }
@@ -226,4 +242,36 @@ public class List_DBManager implements DB_manager {
     public List<Order> getOrders() {
         return orders;
     }
+
+    @Override
+    public List<Car> getAvailableCars() {
+        List<Car> AvailableCars= getCars();
+        for (Order item : orders)
+            if (item.getOrderStatus()== Enums.OrderStatus.OPEN) {
+                AvailableCars.remove(item.getCarNumber());///?????????????????????????????????
+            }
+       return AvailableCars;
+    }
+
+    @Override
+    public List<Car> getAvailableCarsByBranch(int branchNumber) {
+        List<Car> AvailableCars=null;
+        for (Car item : cars)
+            if (item.getHouseBranch()==branchNumber) {
+                AvailableCars.add(item);
+            }
+        return AvailableCars;
+    }
+
+    @Override
+    public List<Order> getOpenOrders() {
+        List<Order> OpenOrders= null;
+        for (Order item : orders)
+            if (item.getOrderStatus()== Enums.OrderStatus.OPEN) {
+                OpenOrders.add(item);
+            }
+        return OpenOrders;
+    }
+
+
 }

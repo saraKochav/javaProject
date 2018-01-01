@@ -4,6 +4,7 @@ import android.content.ContentValues;
 
 import com.example.androidproject5778_3965_2493.model.entities.Branch;
 import com.example.androidproject5778_3965_2493.model.entities.Car;
+import com.example.androidproject5778_3965_2493.model.entities.CarModel;
 import com.example.androidproject5778_3965_2493.model.entities.Customer;
 import com.example.androidproject5778_3965_2493.model.entities.Enums;
 import com.example.androidproject5778_3965_2493.model.entities.Order;
@@ -96,6 +97,45 @@ public class RentConst {
         car.setModelCode(contentValues.getAsInteger(CarConst.MODELCODE));
         car.setMileAge(contentValues.getAsFloat(CarConst.MILEAGE));
         return car;
+    }
+
+    public static ContentValues CarModelToContentValues(CarModel carModel) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CarModelConst.MODELCODE, carModel.getModelCode());
+        contentValues.put(CarModelConst.COMPANYNAME, carModel.getCompanyName());
+        contentValues.put(CarModelConst.MODELNAME, carModel.getModelName());
+        contentValues.put(CarModelConst.ENGINECAPACITY, carModel.getEngineCapacity());
+        contentValues.put(CarModelConst.GEARBOX, carModel.getGearBox().toString());
+        contentValues.put(CarModelConst.SEATS, carModel.getSeats());
+        contentValues.put(CarModelConst.COLOR, carModel.getColor());
+        contentValues.put(CarModelConst.YEARMANUFACTURE, String.valueOf(carModel.getYearManufacture()));
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy"); // like MySQL Format
+        String dateString = dateFormat.format(carModel.getYearManufacture());
+        contentValues.put(CarModelConst.YEARMANUFACTURE, dateString);
+
+        return contentValues;
+    }
+
+    public static CarModel ContentValuesToCarModel(ContentValues contentValues) {
+        CarModel carModel = new CarModel();
+        carModel.setModelCode(contentValues.getAsInteger(CarModelConst.MODELCODE));
+        carModel.setCompanyName(contentValues.getAsString(CarModelConst.COMPANYNAME));
+        carModel.setModelName(contentValues.getAsString(CarModelConst.MODELNAME));
+        carModel.setEngineCapacity(contentValues.getAsFloat(CarModelConst.ENGINECAPACITY));
+        carModel.setGearBox(Enums.GearBox.valueOf(contentValues.getAsString(CarModelConst.GEARBOX)));
+        carModel.setSeats(contentValues.getAsInteger(CarModelConst.SEATS));
+        carModel.setColor(contentValues.getAsString(CarModelConst.COLOR));
+
+        DateFormat dateFormat = new  SimpleDateFormat("yyyy"); // like MySQL Format
+        String dateString = contentValues.getAsString(CarModelConst.YEARMANUFACTURE);
+        try {
+            carModel.setYearManufacture(dateFormat.parse(dateString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return carModel;
     }
 
     public static ContentValues CustomerToContentValues(Customer customer) {

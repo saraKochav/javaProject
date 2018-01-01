@@ -5,9 +5,9 @@ package com.example.androidproject5778_3965_2493.model.entities;
  */
 
 public class Enums {
-   /* public enum GearBox {
+    public enum GearBox {
         AUTO, MANUAL
-    }*/
+    }
 
     public enum OrderStatus{
         OPEN, CLOSE
