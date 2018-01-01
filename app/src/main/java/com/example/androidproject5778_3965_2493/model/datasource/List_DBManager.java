@@ -245,6 +245,9 @@ public class List_DBManager implements DB_manager {
 
     @Override
     public List<Car> getAvailableCars() {
+        /** This method is used to check which cars are available for rent.
+         * @return list of cars.
+         */
         List<Car> AvailableCars= getCars();
         for (Order item : orders)
             if (item.getOrderStatus()== Enums.OrderStatus.OPEN) {
@@ -255,6 +258,9 @@ public class List_DBManager implements DB_manager {
 
     @Override
     public List<Car> getAvailableCarsByBranch(int branchNumber) {
+        /**This method is used to check which cars are available for rent at a particular branch.
+         * @return list of cars.
+         */
         List<Car> AvailableCars=null;
         for (Car item : cars)
             if (item.getHouseBranch()==branchNumber) {
@@ -265,6 +271,10 @@ public class List_DBManager implements DB_manager {
 
     @Override
     public List<Order> getOpenOrders() {
+        /**This method is used to check which order is open,
+         * ie the vehicle is still leased.
+         * @return list of orders
+         */
         List<Order> OpenOrders= null;
         for (Order item : orders)
             if (item.getOrderStatus()== Enums.OrderStatus.OPEN) {
