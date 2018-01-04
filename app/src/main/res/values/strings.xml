@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AndroidProject5778_3965_2493</string>
+    <string name="app_name">Car Rental</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="drawer_open">Slider Menu Opened</string>
@@ -31,15 +31,21 @@
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
-    <string name="title_activity_main_navigation">MainNavigation</string>
+    <string name="title_activity_main_navigation">Home</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_ContactUs">Contact Us</string>
+    <string name="title_Branches">Branches</string>
+    <string name="title_Reservation">Reserve a Car</string>
+    <string name="title_Current_Reservation">Your Reservation</string>
+    <string name="title_Disconnect">Disconnect</string>
+
+    your reservation
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+
+    <string name="contact_fragment">Contact us</string>
 
 </resources>
