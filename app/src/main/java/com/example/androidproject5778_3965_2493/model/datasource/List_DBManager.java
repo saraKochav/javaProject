@@ -12,6 +12,7 @@ import com.example.androidproject5778_3965_2493.model.entities.Enums;
 import com.example.androidproject5778_3965_2493.model.entities.Order;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToBranch;
@@ -19,6 +20,7 @@ import static com.example.androidproject5778_3965_2493.model.datasource.RentCons
 import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToCarModel;
 import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToCustomer;
 import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.ContentValuesToOrder;
+import static com.example.androidproject5778_3965_2493.model.datasource.RentConst.OrderToContentValues;
 
 /**
  * Created by שרה  on 30/12/2017.
@@ -204,9 +206,9 @@ public class List_DBManager implements DB_manager {
                 return true;
             }
         return false;
-    }
+    }*/
 
-    @Override
+    //@Override
     public boolean updateOrder(int id, ContentValues values) {
         Order order = ContentValuesToOrder(values);
         order.setOrderID(id);
@@ -216,7 +218,7 @@ public class List_DBManager implements DB_manager {
                 return true;
             }
         return false;
-    }*/
+    }
 
     @Override
     public List<Customer> getCustomers() {
@@ -249,9 +251,11 @@ public class List_DBManager implements DB_manager {
          * @return list of cars.
          */
         List<Car> AvailableCars= getCars();
-        for (final Order item : orders)
+        for (final Order item : getOrders())
             if (item.getOrderStatus()== Enums.OrderStatus.OPEN) {
                // AvailableCars.removeIf(p -> p.getCarNumber()== item.getCarNumber());///?????????????????????????????????
+                Car c=getCarByID(item.getCarNumber());
+                AvailableCars.remove(c);
             }
        return AvailableCars;
     }
@@ -283,5 +287,41 @@ public class List_DBManager implements DB_manager {
         return OpenOrders;
     }
 
+    private Order getOrderByID( int orderID)
+    {
+        for(Order o : getOrders())
+        {
+            if(o.getOrderID()==orderID)
+                return o;
+        }
+        return null;
+    }
+
+    private Car getCarByID( int carID)
+    {
+        for(Car c : getCars())
+        {
+            if(c.getCarNumber()==carID)
+                return c;
+        }
+        return null;
+    }
+
+    public void closeExistOrder(int orderId, float km)
+    {
+        Order order=getOrderByID(orderId);
+        if (order!= null)
+        {
+            order.setEndMileAge(km);
+            order.setEndRent(new Date());
+            float chargePerMin=(float)0.1;
+            float chargePerKM=(float)0.6;
+            float calculateCharge=chargePerMin* (order.getStartRent().getTime()- order.getEndRent().getTime())
+                    +chargePerKM*(order.getStartMileAge()-order.getEndMileAge());
+            order.setCharge(calculateCharge);
+            order.setOrderStatus(Enums.OrderStatus.CLOSE);
+            updateOrder(order.getOrderID(), OrderToContentValues(order));
+        }
+    }
 
 }
