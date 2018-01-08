@@ -19,7 +19,6 @@
         <activity
             android:name=".controller.MainNavigation"
             android:label="@string/title_activity_main_navigation" />
-        <activity android:name=".controller.openActivity"></activity>
     </application>
 
 </manifest>

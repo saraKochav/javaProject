@@ -253,7 +253,6 @@ public class List_DBManager implements DB_manager {
         List<Car> AvailableCars= getCars();
         for (final Order item : getOrders())
             if (item.getOrderStatus()== Enums.OrderStatus.OPEN) {
-               // AvailableCars.removeIf(p -> p.getCarNumber()== item.getCarNumber());///?????????????????????????????????
                 Car c=getCarByID(item.getCarNumber());
                 AvailableCars.remove(c);
             }
